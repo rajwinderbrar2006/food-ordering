@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMBER &amp; BOWL — Wood-Fired Craft Kitchen &amp; Modern Delivery</title>
+  <meta name="description" content="Order wood-fired pizzas, wagyu smash burgers, artisan ramen &amp; nourish bowls, small plates, desserts, and craft elixirs. Live customization, smart cart, and real-time order tracking." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Live Kitchen Telemetry Ribbon -->
+  <div class="telemetry-bar" role="status" aria-live="polite">
+    <div class="container telemetry-inner">
+      <div class="telemetry-left">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span><strong>Kitchen Live:</strong> Firing 14 orders &bull; Est. Delivery <span class="mono">22–28 min</span></span>
+      </div>
+      <div class="telemetry-right">
+        <span class="promo-pill">Use code <button type="button" class="copy-promo-btn" data-promo="EMBER20" title="Click to apply EMBER20">EMBER20</button> for 20% off</span>
+        <span class="divider-dot" aria-hidden="true">&bull;</span>
+        <span>Free express delivery over <span class="mono">$35</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Navigation Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a href="#top" class="brand" aria-label="Ember and Bowl Home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 3C16 3 24 9.5 24 17.5C24 22.1944 20.4183 26 16 26C11.5817 26 8 22.1944 8 17.5C8 14.3 9.4 11.4 11.2 9.2C11.5 11.5 13 13 14.5 13C14.5 9.5 16 3 16 3Z" fill="currentColor"/>
+            <path d="M7 27.5H25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-name">EMBER &amp; BOWL</span>
+          <span class="brand-sub">Wood-Fired Craft Kitchen</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary navigation">
+        <a href="#menu-explorer" class="nav-link">All Menu</a>
+        <a href="#feast-builder" class="nav-link">Feast Builder</a>
+        <a href="#chef-standards" class="nav-link">Our Craft</a>
+        <button type="button" class="nav-link nav-btn" id="openOrdersBtn">
+          Orders <span class="mini-badge" id="ordersCountBadge" hidden>0</span>
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Fulfillment Mode Switch -->
+        <div class="fulfillment-toggle" role="group" aria-label="Fulfillment mode">
+          <button type="button" class="fulfill-opt active" data-mode="delivery">Delivery</button>
+          <button type="button" class="fulfill-opt" data-mode="pickup">Pickup</button>
+        </div>
+
+        <button type="button" class="icon-action-btn" id="favoritesToggleBtn" aria-label="Show saved favorites" title="Saved Favorites">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span class="action-badge" id="favCountBadge" hidden>0</span>
+        </button>
+
+        <button type="button" class="icon-action-btn" id="themeToggleBtn" aria-label="Toggle light or dark theme" title="Toggle Theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <button type="button" class="cart-trigger-btn" id="openCartBtn" aria-label="Open shopping cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="cart-trigger-label">Cart</span>
+          <span class="cart-trigger-count" id="headerCartCount">0</span>
+          <span class="cart-trigger-total mono" id="headerCartTotal">$0.00</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="eyebrow-tag">OPEN NOW &bull; 11:00 AM – 11:30 PM</span>
+            <span class="rating-pill">&#9733; 4.9 <span class="muted">(2,840+ orders)</span></span>
+          </div>
+          <h1 class="hero-title">
+            Wood-Fired Craft.<br />
+            <span class="accent-italic">Delivered</span> Piping Hot.
+          </h1>
+          <p class="hero-subtitle">
+            Explore our complete 18-dish kitchen menu—from 72-hour blistered sourdough pizzas and double wagyu smash burgers to umami ramen, nourish bowls, and craft botanical elixirs. Customize every bite.
+          </p>
+
+          <div class="hero-ctas">
+            <a href="#menu-explorer" class="btn btn-primary btn-lg">
+              Explore Full Menu
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a href="#feast-builder" class="btn btn-ghost btn-lg">
+              Build 3-Course Feast (Save 15%)
+            </a>
+          </div>
+
+          <!-- Quick Jump Category Chips -->
+          <div class="hero-quick-stats">
+            <div class="stat-item">
+              <span class="stat-num mono">18</span>
+              <span class="stat-lbl">Chef Dishes</span>
+            </div>
+            <div class="stat-sep"></div>
+            <div class="stat-item">
+              <span class="stat-num mono">18m</span>
+              <span class="stat-lbl">Avg Kitchen Prep</span>
+            </div>
+            <div class="stat-sep"></div>
+            <div class="stat-item">
+              <span class="stat-num mono">100%</span>
+              <span class="stat-lbl">Customizable</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-image-frame">
+            <img src="assets/images/hero-feast.jpg" alt="Wood-fired pizza, poke bowl, bao buns, and craft citrus cocktails spread on dark oak table" class="hero-img" />
+            <div class="hero-image-overlay"></div>
+
+            <!-- Floating Signature Drop Card -->
+            <div class="hero-drop-card">
+              <div class="drop-badge">CHEF'S DROP</div>
+              <div class="drop-body">
+                <div>
+                  <h3>Burrata &amp; Chili Honey Pie</h3>
+                  <p class="muted">72h sourdough, San Marzano, fresh basil</p>
+                </div>
+                <div class="drop-actions">
+                  <span class="price-tag mono">$19.50</span>
+                  <button type="button" class="btn btn-primary btn-sm quick-add-hero" data-dish-id="pizza-burrata">+ Quick Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full Menu Explorer Section -->
+    <section class="menu-section" id="menu-explorer">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <span class="section-kicker">COMPLETE KITCHEN MENU</span>
+            <h2 class="section-title">Every Dish. Freshly Fired to Order.</h2>
+          </div>
+          <div class="view-switcher" role="group" aria-label="Menu view layout">
+            <button type="button" class="view-btn active" data-view="grid" title="Visual Card Grid">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+              </svg>
+              Cards
+            </button>
+            <button type="button" class="view-btn" data-view="board" title="Full Menu Board View">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"/>
+                <line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/>
+                <circle cx="4" cy="6" r="1.5" fill="currentColor"/>
+                <circle cx="4" cy="12" r="1.5" fill="currentColor"/>
+                <circle cx="4" cy="18" r="1.5" fill="currentColor"/>
+              </svg>
+              Full Menu Board
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs-wrap">
+          <div class="category-tabs" id="categoryTabs" role="tablist" aria-label="Menu categories">
+            <!-- Dynamically populated by JS -->
+          </div>
+        </div>
+
+        <!-- Search, Dietary Filters & Sort Bar -->
+        <div class="controls-bar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input type="search" id="menuSearchInput" placeholder="Search dishes, ingredients (e.g. truffle, wagyu, vegan, yuzu)..." aria-label="Search menu dishes" />
+            <button type="button" class="clear-search-btn" id="clearSearchBtn" aria-label="Clear search" hidden>&times;</button>
+          </div>
+
+          <div class="dietary-filters" id="dietaryFilters" role="group" aria-label="Dietary and highlight filters">
+            <button type="button" class="filter-chip" data-filter="signature">Chef's Pick</button>
+            <button type="button" class="filter-chip" data-filter="vegan">Vegan</button>
+            <button type="button" class="filter-chip" data-filter="gf">Gluten-Free</button>
+            <button type="button" class="filter-chip" data-filter="spicy">Spicy</button>
+            <button type="button" class="filter-chip" data-filter="high-protein">High Protein</button>
+            <button type="button" class="filter-chip" data-filter="favorites" id="favFilterChip">Favorites Only</button>
+          </div>
+
+          <div class="sort-wrap">
+            <label for="sortSelect" class="sr-only">Sort dishes</label>
+            <select id="sortSelect" class="sort-select">
+              <option value="featured">Sort: Chef's Featured</option>
+              <option value="rating">Sort: Highest Rated</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="prep-asc">Fastest Prep Time</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Active Filters Summary -->
+        <div class="results-meta">
+          <span id="resultsCountText">Showing 18 dishes across all categories</span>
+          <button type="button" class="reset-filters-btn" id="resetFiltersBtn" hidden>Reset all filters</button>
+        </div>
+
+        <!-- Menu Container (Grid OR Board) -->
+        <div id="menuContainer" class="menu-grid">
+          <!-- Rendered dynamically by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Unique Interactive Feature: Curate Your 3-Course Feast Builder -->
+    <section class="feast-section" id="feast-builder">
+      <div class="container">
+        <div class="feast-card">
+          <div class="feast-header">
+            <div>
+              <span class="section-kicker">INTERACTIVE BUNDLE &bull; SAVE 15%</span>
+              <h2 class="section-title">Curate Your 3-Course Feast</h2>
+              <p class="muted">Pick any Main, Small Plate, and Dessert or Craft Drink below. We automatically bundle them at 15% off into your cart.</p>
+            </div>
+            <div class="feast-savings-badge">
+              <span class="mono">BUNDLE DISCOUNT</span>
+              <strong>-15% OFF</strong>
+            </div>
+          </div>
+
+          <div class="feast-slots-grid">
+            <div class="feast-slot" data-slot="main">
+              <div class="slot-header">
+                <span class="slot-step mono">01</span>
+                <h3>Choose Your Main</h3>
+              </div>
+              <select id="feastMainSelect" class="feast-select" aria-label="Select main dish for feast bundle"></select>
+              <div class="slot-preview" id="feastMainPreview"></div>
+            </div>
+
+            <div class="feast-slot" data-slot="starter">
+              <div class="slot-header">
+                <span class="slot-step mono">02</span>
+                <h3>Choose Small Plate</h3>
+              </div>
+              <select id="feastStarterSelect" class="feast-select" aria-label="Select starter dish for feast bundle"></select>
+              <div class="slot-preview" id="feastStarterPreview"></div>
+            </div>
+
+            <div class="feast-slot" data-slot="treat">
+              <div class="slot-header">
+                <span class="slot-step mono">03</span>
+                <h3>Sweet or Elixir</h3>
+              </div>
+              <select id="feastTreatSelect" class="feast-select" aria-label="Select dessert or drink for feast bundle"></select>
+              <div class="slot-preview" id="feastTreatPreview"></div>
+            </div>
+          </div>
+
+          <div class="feast-footer">
+            <div class="feast-price-summary">
+              <span class="muted">Regular: <s id="feastRegularPrice" class="mono">$0.00</s></span>
+              <span class="feast-final-price">Bundle Total: <strong id="feastBundlePrice" class="mono">$0.00</strong></span>
+              <span class="feast-save-tag mono" id="feastSavingsText">Save $0.00</span>
+            </div>
+            <button type="button" class="btn btn-primary btn-lg" id="addFeastBundleBtn">
+              Add 3-Course Feast to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Culinary Craft Standards -->
+    <section class="craft-section" id="chef-standards">
+      <div class="container">
+        <div class="craft-grid">
+          <article class="craft-item">
+            <span class="craft-num mono">01 / DOUGH</span>
+            <h3>72-Hour Cold Ferment</h3>
+            <p class="muted">Every pizza base rests for three full days using heritage stone-milled flour before hitting our 900&deg;F oak-fired hearth.</p>
+          </article>
+          <article class="craft-item">
+            <span class="craft-num mono">02 / BROTH</span>
+            <h3>18-Hour Simmered Stocks</h3>
+            <p class="muted">Our ramen broths are slow-extracted overnight with roasted marrow, kombu, and charred aromatics—never powdered bases.</p>
+          </article>
+          <article class="craft-item">
+            <span class="craft-num mono">03 / PACKAGING</span>
+            <h3>Vented Thermal Boxes</h3>
+            <p class="muted">Crisp stays crisp. Custom-vented compostable vessels prevent steam-soggy crusts and keep broths separated until arrival.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-name">EMBER &amp; BOWL</span>
+        <p class="muted">420 Mercer Street, Culinary District &bull; Open Daily 11:00 AM – 11:30 PM</p>
+      </div>
+      <div class="footer-promos">
+        <span class="muted">Active Promo Codes:</span>
+        <button type="button" class="code-chip copy-promo-btn" data-promo="EMBER20">EMBER20 (20% Off)</button>
+        <button type="button" class="code-chip copy-promo-btn" data-promo="WELCOME10">WELCOME10 ($10 Off)</button>
+        <button type="button" class="code-chip copy-promo-btn" data-promo="FREESHIP">FREESHIP (Free Delivery)</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Mobile Cart Bar -->
+  <div class="mobile-cart-bar" id="mobileCartBar" hidden>
+    <button type="button" class="mobile-cart-btn" id="mobileCartOpenBtn">
+      <span class="mobile-cart-left">
+        <span class="mobile-cart-count mono" id="mobileCartCount">0 items</span>
+        <span>View Order</span>
+      </span>
+      <span class="mobile-cart-total mono" id="mobileCartTotal">$0.00</span>
+    </button>
+  </div>
+
+  <!-- Slide-Out Smart Cart Drawer -->
+  <div class="drawer-backdrop" id="cartBackdrop" hidden></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping Cart" aria-hidden="true">
+    <div class="drawer-header">
+      <div>
+        <h2>Your Order</h2>
+        <p class="muted small" id="drawerFulfillmentSubtitle">Delivering in 22–28 min</p>
+      </div>
+      <div class="drawer-header-actions">
+        <button type="button" class="text-btn danger" id="clearCartBtn" hidden>Clear All</button>
+        <button type="button" class="close-modal-btn" id="closeCartBtn" aria-label="Close cart">&times;</button>
+      </div>
+    </div>
+
+    <!-- Free Delivery Progress -->
+    <div class="delivery-progress-box" id="deliveryProgressBox">
+      <div class="progress-text-row">
+        <span id="deliveryProgressText">Add <strong class="mono">$35.00</strong> more for FREE delivery</span>
+        <span class="mono" id="deliveryProgressPct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="deliveryProgressFill" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items Scroll Area -->
+    <div class="drawer-body" id="cartBody">
+      <!-- Empty State -->
+      <div class="cart-empty" id="cartEmptyState">
+        <div class="empty-illustration" aria-hidden="true">&#127869;</div>
+        <h3>Your plate is empty</h3>
+        <p class="muted">Explore our 18 wood-fired dishes, craft bowls, and botanical drinks to start your order.</p>
+        <button type="button" class="btn btn-primary" id="browseMenuFromCartBtn">Browse Menu</button>
+      </div>
+
+      <!-- Populated Cart Items -->
+      <ul class="cart-items-list" id="cartItemsList"></ul>
+
+      <!-- Recommended Upsells -->
+      <div class="cart-upsells" id="cartUpsells" hidden>
+        <h4>Complete Your Meal</h4>
+        <div class="upsells-row" id="upsellsRow"></div>
+      </div>
+    </div>
+
+    <!-- Cart Footer (Promo, Tip, Breakdown, Checkout) -->
+    <div class="drawer-footer" id="cartFooter" hidden>
+      <!-- Promo Code -->
+      <form class="promo-form" id="promoForm">
+        <input type="text" id="promoInput" placeholder="Promo code (try EMBER20)" aria-label="Promo code" />
+        <button type="submit" class="btn btn-secondary btn-sm">Apply</button>
+      </form>
+      <div class="applied-promo-row" id="appliedPromoRow" hidden>
+        <span class="applied-promo-badge">
+          Code <strong class="mono" id="appliedPromoCode"></strong> applied
+        </span>
+        <button type="button" class="text-btn" id="removePromoBtn">Remove</button>
+      </div>
+
+      <!-- Tip Selector -->
+      <div class="tip-row" id="tipRow">
+        <span class="tip-label">Kitchen &amp; Courier Tip</span>
+        <div class="tip-pills" role="group" aria-label="Tip percentage">
+          <button type="button" class="tip-pill" data-tip="0">0%</button>
+          <button type="button" class="tip-pill active" data-tip="0.10">10%</button>
+          <button type="button" class="tip-pill" data-tip="0.15">15%</button>
+          <button type="button" class="tip-pill" data-tip="0.20">20%</button>
+        </div>
+      </div>
+
+      <!-- Totals Breakdown -->
+      <div class="totals-breakdown">
+        <div class="total-line">
+          <span>Subtotal</span>
+          <span class="mono" id="cartSubtotal">$0.00</span>
+        </div>
+        <div class="total-line discount" id="cartDiscountLine" hidden>
+          <span>Promo Discount</span>
+          <span class="mono" id="cartDiscount">-$0.00</span>
+        </div>
+        <div class="total-line">
+          <span id="cartDeliveryLabel">Delivery Fee</span>
+          <span class="mono" id="cartDeliveryFee">$4.99</span>
+        </div>
+        <div class="total-line">
+          <span>Estimated Tax (8.5%)</span>
+          <span class="mono" id="cartTax">$0.00</span>
+        </div>
+        <div class="total-line" id="cartTipLine">
+          <span>Tip (<span id="cartTipPctLabel">10%</span>)</span>
+          <span class="mono" id="cartTipAmount">$0.00</span>
+        </div>
+        <div class="total-line grand-total">
+          <span>Total</span>
+          <span class="mono" id="cartGrandTotal">$0.00</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-block btn-lg" id="proceedCheckoutBtn">
+        Proceed to Checkout &bull; <span class="mono" id="checkoutBtnTotal">$0.00</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Dish Customizer Modal -->
+  <div class="modal-backdrop" id="customizerModal" hidden role="dialog" aria-modal="true" aria-labelledby="custTitle">
+    <div class="modal-card customizer-card">
+      <button type="button" class="close-modal-btn modal-float-close" id="closeCustomizerBtn" aria-label="Close dish customizer">&times;</button>
+      <div class="customizer-grid">
+        <div class="customizer-media">
+          <img id="custImage" src="" alt="" />
+          <div class="cust-badges" id="custBadges"></div>
+        </div>
+        <div class="customizer-body">
+          <div class="cust-header">
+            <span class="cust-category mono" id="custCategory"></span>
+            <h2 id="custTitle"></h2>
+            <p class="muted" id="custDesc"></p>
+            <div class="cust-meta-row mono" id="custMeta"></div>
+          </div>
+
+          <div class="cust-scroll">
+            <!-- Size / Portion -->
+            <div class="cust-group" id="custSizeGroup">
+              <h4>Portion Size <span class="req-tag">Required</span></h4>
+              <div class="option-pills" id="custSizeOptions"></div>
+            </div>
+
+            <!-- Spice Level -->
+            <div class="cust-group" id="custSpiceGroup">
+              <h4>Heat &amp; Spice Level</h4>
+              <div class="option-pills" id="custSpiceOptions"></div>
+            </div>
+
+            <!-- Extra Add-ons -->
+            <div class="cust-group" id="custAddonsGroup">
+              <h4>Chef Add-Ons <span class="muted small">(Optional)</span></h4>
+              <div class="addons-list" id="custAddonsList"></div>
+            </div>
+
+            <!-- Special Instructions -->
+            <div class="cust-group">
+              <label for="custNotes"><h4>Kitchen Note</h4></label>
+              <textarea id="custNotes" rows="2" placeholder="Allergies, sauce on side, extra crispy crust..."></textarea>
+            </div>
+          </div>
+
+          <div class="cust-footer">
+            <div class="qty-stepper lg">
+              <button type="button" id="custQtyMinus" aria-label="Decrease quantity">&minus;</button>
+              <span class="mono" id="custQtyValue">1</span>
+              <button type="button" id="custQtyPlus" aria-label="Increase quantity">+</button>
+            </div>
+            <button type="button" class="btn btn-primary btn-lg flex-1" id="custSaveBtn">
+              Add to Order &bull; <span class="mono" id="custTotalPrice">$0.00</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal-backdrop" id="checkoutModal" hidden role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div class="modal-card checkout-card">
+      <div class="modal-header-bar">
+        <h2 id="checkoutTitle">Complete Your Order</h2>
+        <button type="button" class="close-modal-btn" id="closeCheckoutBtn" aria-label="Close checkout">&times;</button>
+      </div>
+      <form id="checkoutForm" class="checkout-form" novalidate>
+        <div class="checkout-grid">
+          <div class="checkout-fields">
+            <div class="form-section">
+              <h3>1. Contact Details</h3>
+              <div class="field-row">
+                <div class="field">
+                  <label for="custNameInput">Full Name *</label>
+                  <input type="text" id="custNameInput" required placeholder="Alex Morgan" />
+                </div>
+                <div class="field">
+                  <label for="custPhoneInput">Phone Number *</label>
+                  <input type="tel" id="custPhoneInput" required placeholder="(555) 234-5678" />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section" id="deliveryAddressSection">
+              <h3>2. Delivery Address</h3>
+              <div class="field">
+                <label for="custAddressInput">Street Address *</label>
+                <input type="text" id="custAddressInput" required placeholder="742 Evergreen Terrace, Apt 4B" />
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="custCityInput">Neighborhood / City</label>
+                  <input type="text" id="custCityInput" value="Culinary District" />
+                </div>
+                <div class="field">
+                  <label for="custDropoffInput">Drop-off Note</label>
+                  <input type="text" id="custDropoffInput" placeholder="Leave at lobby / ring bell" />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section" id="pickupNoticeSection" hidden>
+              <h3>2. Self-Pickup Location</h3>
+              <div class="pickup-info-box">
+                <strong>EMBER &amp; BOWL Flagship Kitchen</strong>
+                <p class="muted">420 Mercer Street &bull; Ready in approximately 15–18 minutes at the Express Pickup Counter.</p>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>3. Payment Method</h3>
+              <div class="payment-options">
+                <label class="pay-opt">
+                  <input type="radio" name="paymentMethod" value="card" checked />
+                  <span>Credit / Debit Card</span>
+                </label>
+                <label class="pay-opt">
+                  <input type="radio" name="paymentMethod" value="wallet" />
+                  <span>Apple / Google Pay</span>
+                </label>
+                <label class="pay-opt">
+                  <input type="radio" name="paymentMethod" value="cash" />
+                  <span>Cash on Delivery</span>
+                </label>
+              </div>
+              <div class="card-mock-fields" id="cardMockFields">
+                <div class="field">
+                  <label for="cardNumberInput">Card Number</label>
+                  <input type="text" id="cardNumberInput" value="4242 •••• •••• 4242" maxlength="19" />
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="cardExpInput">Expiry</label>
+                    <input type="text" id="cardExpInput" value="09/28" maxlength="5" />
+                  </div>
+                  <div class="field">
+                    <label for="cardCvcInput">CVC</label>
+                    <input type="text" id="cardCvcInput" value="842" maxlength="4" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-summary-pane">
+            <h3>Order Summary</h3>
+            <ul class="checkout-mini-list" id="checkoutMiniList"></ul>
+            <div class="totals-breakdown compact" id="checkoutTotalsSummary"></div>
+            <p class="form-error-msg" id="checkoutErrorMsg" hidden></p>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              Place Order &bull; <span class="mono" id="placeOrderBtnTotal">$0.00</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Live Order Tracker Modal -->
+  <div class="modal-backdrop" id="trackerModal" hidden role="dialog" aria-modal="true" aria-labelledby="trackerTitle">
+    <div class="modal-card tracker-card">
+      <div class="modal-header-bar">
+        <div>
+          <span class="section-kicker">LIVE KITCHEN TELEMETRY</span>
+          <h2 id="trackerTitle">Order <span class="mono" id="trackerOrderId">#EMB-0000</span></h2>
+        </div>
+        <button type="button" class="close-modal-btn" id="closeTrackerBtn" aria-label="Close order tracker">&times;</button>
+      </div>
+
+      <div class="tracker-body">
+        <div class="tracker-eta-banner">
+          <div>
+            <span class="muted small">Estimated Arrival / Ready</span>
+            <div class="eta-clock mono" id="trackerEtaText">24 mins</div>
+          </div>
+          <span class="status-pill" id="trackerStatusBadge">Confirmed</span>
+        </div>
+
+        <ol class="tracker-steps" id="trackerSteps">
+          <li class="track-step active" data-stage="0">
+            <div class="step-dot"></div>
+            <div>
+              <strong>Order Confirmed</strong>
+              <p class="muted small">Kitchen ticket printed &amp; ingredients staged.</p>
+            </div>
+          </li>
+          <li class="track-step" data-stage="1">
+            <div class="step-dot"></div>
+            <div>
+              <strong>Firing on the Ember</strong>
+              <p class="muted small">Chefs are searing, baking, and plating your dishes.</p>
+            </div>
+          </li>
+          <li class="track-step" data-stage="2">
+            <div class="step-dot"></div>
+            <div>
+              <strong>Quality Check &amp; Thermal Seal</strong>
+              <p class="muted small">Garnished fresh and packed in vented thermal boxes.</p>
+            </div>
+          </li>
+          <li class="track-step" data-stage="3">
+            <div class="step-dot"></div>
+            <div>
+              <strong id="trackerFinalTitle">Out for Express Delivery</strong>
+              <p class="muted small" id="trackerFinalDesc">Courier is en route to your door.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="tracker-receipt" id="trackerReceipt"></div>
+
+        <div class="tracker-actions">
+          <button type="button" class="btn btn-secondary" id="advanceStageBtn">Simulate Next Kitchen Stage</button>
+          <button type="button" class="btn btn-primary" id="trackerDoneBtn">Back to Menu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order History Modal -->
+  <div class="modal-backdrop" id="historyModal" hidden role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+    <div class="modal-card history-card">
+      <div class="modal-header-bar">
+        <h2 id="historyTitle">Your Recent Orders</h2>
+        <button type="button" class="close-modal-btn" id="closeHistoryBtn" aria-label="Close order history">&times;</button>
+      </div>
+      <div class="history-body" id="historyBody"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
